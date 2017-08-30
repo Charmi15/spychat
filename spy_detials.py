@@ -13,7 +13,7 @@ if (existing == 'Y' or existing == 'y') :
 elif (existing == 'N' or existing == 'n'):
     # new users code here.
     spy['name'] = raw_input("Provide your name here :")
-    # chek whether spy has input something or not
+    #  chek whether spy has input something or not
     if len(spy['name']) > 0:
         # code block if the condition is true.
         # concatination of salutation and name.
