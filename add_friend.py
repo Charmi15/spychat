@@ -1,59 +1,48 @@
-# import statements.
-from globals import friends,Spy
+#import statements
+from main import Spy,friends
 from termcolor import colored
-from spy_details import spy
-# add new friends.
-import re
+from main import spy
+#FUNCTION FOR ADDING A FRIEND
 def add_friend():
-    new_friend =Spy(" "," ",0,0.0,False)
-    tempcheck=True#temporary variable
-    #Validation Using Regex
-    patternsalutation='^Mr|Ms$'
-    patternname='^[A-Za-z][A-Za-z\s]+$'
-    patternage='^[0-9]+$'
-    patternrating='^[0-9]+\.[0-9]$'
-    #Validating Each Values Using Regular Expression
-    while tempcheck:
-        salutation = raw_input("Mr. or Ms.? : ")
-        if (re.match(patternsalutation, salutation) != None):
-            tempcheck = False
-        else:
-            print colored("Enter Again!!!!",'red')
-    tempcheck=True
-    while tempcheck:
-        new_friend.Name=raw_input("Enter Name: ")
-        if(re.match(patternname,new_friend.Name)!=None):
-            tempcheck=False
-        else:
-            print colored("Enter Again!!!!",'red')
+    # Using the class spy
+    new_friend = Spy(" ", " ", 0, 0.0)
+    while True:
+        new_friend.name = raw_input("Please add your friend's name:- ")
+        if len(new_friend.name)>0:
+            while True:
+                new_friend.salutation = raw_input("Are they Mr. or Ms. ?:- ")
+                if len(new_friend.salutation)>0:
+                    if (new_friend.salutation == 'ms.' or new_friend.salutation == 'Ms.' or new_friend.salutation == "Mr." or new_friend.salutation == "mr."):
+                        # ask for the age of the friend
+                        while True:
+                            new_friend.age = raw_input("Age?:- ")
 
-    # concatenation.
-    new_friend.Name = salutation + "."+new_friend.Name
-    tempcheck=True
-    while tempcheck:
-        new_friend.Age = raw_input("Age?")
-        if (re.match(patternage, new_friend.Age) != None):
-            tempcheck = False
-            new_friend.Age=int(new_friend.Age)
+                            # Type casting to integer
+                            if len(new_friend.age) > 0:
+                                new_friend.age = int(new_friend.age)
+                                if 18 < new_friend.age < 50:
+                                        # After the conditions are satisfied the friend will be added
+                                        friends.append(new_friend)
+                                        print(colored('FRIEND ADDED!', "magenta"))
+
+                                else:
+                                        print (colored("Sorry but your age is not valid for spy!", 'red'))
+                                        print(colored("       THANK YOU!       ", 'yellow'))
+                                        exit()
+                                return len(friends)
+                                        #application will terminate
+                                                # The no of friends the spy has will be returned.
+                                             # The no of friends the spy has will be returned.
+                            else:
+                                    print (colored("Sorry but age cannot be blank!", 'red'))
+
+
+
+                        # The no of friends the spy has will be returned.
+                    else:
+                        print(colored('Please enter valid salutation!', 'red'))
+                else:
+                    print(colored('Salutation cannot be blank!','red'))
         else:
-            print colored("Enter Again!!!!",'red')
-    tempcheck=True #temporary variable
-    while tempcheck:
-        new_friend.Rating = raw_input("Spy rating?")
-        if (re.match(patternrating, new_friend.Rating) != None):
-            tempcheck = False
-            new_friend.Rating=float(new_friend.Rating)
-        else:
-            print colored("Enter Again!!!!",'red')
-    # validating input:: AGE and RATING,i.e.,
-    #Age b/w 12 and 50
-    #Rating b/w 0.0 to 5.0
-    #Friends Rating must be greater than or equal to User Rating
-    if new_friend.Rating <= 5.0 and new_friend.Age > 12 and new_friend.Age < 50 and new_friend.Rating>=spy.Rating:
-        # add_friend
-        friends.append(new_friend)
-        print colored("Friend Added",'green')
-    else:
-        print colored("Sorry invalid entry!!!!",'red')
-    # returning number of friends
-    return len(friends)
+            print(colored('Name cannot be blank!','red'))
+            return len(friends)
