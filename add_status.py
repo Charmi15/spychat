@@ -1,37 +1,65 @@
+#IMPORT STATEMENT
+from globals import STATUS_MESSAGES
+from main import spy
 from termcolor import colored
-STATUS_MESSAGES = ["Spy mode ON", "Busy, Call If Urgent"]
+#<-------------TO ADD STATUS------------->
 def add_status():
-    tempcheck=True#temporary variable
-    wholecheck=True#temporary variable
-    while wholecheck:
-        default = raw_input("Do you want to select from older status (y/n)? ")
-        if default.upper() == "N":
-            wholecheck=False
-            #Setting new Status Message
-            while tempcheck:
-                new_status_message = raw_input("What status message do you want to set? ")
-                if len(new_status_message)>0:
-                    updated_status_message = new_status_message
-                    STATUS_MESSAGES.append(updated_status_message)
-                    tempcheck=False
-                else:
-                    print colored("Please enter a valid status ",'red')
+    # in the beginning no status message
+    updated_status_message = None
 
-        elif default.upper() == "Y":
-            wholecheck=False
-            while tempcheck:
-                item_position = 1
-                #selecting from list(Status)
-                for message in STATUS_MESSAGES:
-                    print str(item_position) +". "+ str(message)
-                    item_position = item_position + 1
-                message_selection = int(raw_input("Use Number To Select Desired Status\nEnter Choice:  "))
-                if len(STATUS_MESSAGES) >= message_selection:
-                    updated_status_message = STATUS_MESSAGES[message_selection - 1]
-                    tempcheck=False
-                else:
-                    print colored("Select a proper status",'red')
+    # check if current status message is set or not
+    if spy.current_status_message is not None:
+        print 'Your current status message is %s \n' % spy.current_status_message
+    else:
+        print 'You don\'t have any status message  \n'
 
-        else:
-            print colored("Wrong choice. Please try again",'red')
+    # Asking if the user wants to select a default status or a status which is already present
+    default = raw_input("Do you want to select from existing older status (y/n)?:- ")
+
+    # A spy wants to add another status rather from the existing one
+    # .upper() converts from any case to upper case
+    if default.upper() == "N":
+        # ask the user to enter a new status
+        new_status_message = raw_input("What status message do you want to set?:- ")
+
+        # if valid status message is entered
+        if len(new_status_message) > 0:
+            # in the existing status list add the new status
+            STATUS_MESSAGES.append(new_status_message)
+            # variable update
+            updated_status_message = new_status_message
+
+    # A spy wants to choose from the existing status
+    elif default.upper() == 'Y':
+
+        # To give an index number to the statuses
+        item_position = 1
+
+        # To show all the default statuses so that the user can select
+        for message in STATUS_MESSAGES:
+            print (colored('%d. %s' % (item_position, message),'green'))
+            item_position = item_position + 1
+
+        # Ask the user which index of the list he wants to choose.
+        message_selection = int(raw_input("\nChoose the index of the status:- "))
+
+        # Check if the position exists and then only set it
+        if len(STATUS_MESSAGES) >= message_selection:
+            # Variable update
+            updated_status_message = STATUS_MESSAGES[message_selection - 1]
+
+    # When the user chooses neither yes nor no
+    else:
+        print (colored('The option you chose is not valid! Press either y or n.','red'))
+
+    # When the status message is updated
+    if updated_status_message:
+        print (colored('Your updated status message is:','hello'))
+        print(colored(updated_status_message, "hello"))
+
+    # When it is not updated
+    else:
+        print(colored('You did not update your status message','Blue'))
+
+    # The updated message will be read
     return updated_status_message

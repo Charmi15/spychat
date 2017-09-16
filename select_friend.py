@@ -1,10 +1,28 @@
-from globals import friends
+#import staements
+from main import friends
+from termcolor import colored
+#FUNCTION TO SELECT A FRIEND FROM THE LIST
+def select_a_friend():
 
-def select_friend():
-    counter = 1
+    # indexing the position of a friend
+    item_number = 0
+
+    # To select a friend with the indexing
     for friend in friends:
-        print str(counter) + ". " + friend['name'] + "Age : " + str(friend['age'])
-        counter = counter + 1
+        print (colored('%d. %s %s aged %d with rating %.2f is online' % (item_number + 1, friend.salutation, friend.name, friend.age, friend.rating),'green'))
+        item_number = item_number + 1
 
-    result = int(raw_input("Select from the list : "))
-    return result - 1
+    # Ask the user which friend he want to have a chat with
+    friend_choice = raw_input(colored("Choose the index of the friend:- ", "blue"))
+    # The friend will be selected
+    friend_choice_position = int(friend_choice) - 1
+
+    # Check if the user chooses index out of range
+    if friend_choice_position + 1 > len(friends):
+        print(colored("Sorry,This friend is not present!please select from below one:- ", 'red'))
+        return select_a_friend()
+
+    else:
+        # returns the selected friend to perform the options
+        return friend_choice_position
+
