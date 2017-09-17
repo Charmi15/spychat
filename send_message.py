@@ -32,7 +32,7 @@ def send_a_message():
                             friends[friend_choice].chats.append(new_chat)
 
                             # After the encoding is done the message is ready.
-                            print(colored("Your secret message image is ready!", "cyan"))
+                            print(colored("Your secret message image is ready!", "hello"))
                             #returning back to menu choice
                             return new_chat
 
