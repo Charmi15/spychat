@@ -8,4 +8,3 @@ def select_friend():
 
     result = int(raw_input("Select a friend from the list : "))
     return result - 1
-
