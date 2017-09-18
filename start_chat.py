@@ -1,62 +1,76 @@
-# import statements
-#from globals import current_status_message
-from add_status import add_status
+#start_chat() definition
+from read_message import read_message
+from send_message import send_message
+from friend import friend_list
+from read_chat import read_chat
+import re
+from colorama import Fore,init
 from add_friend import add_friend
+from add_status import add_status,status_message
 
-# start_chat() function definition.
-def start_chat(name, age, rating, status):
-    from globals import current_status_message,friends
-    from send_message import send_message
-    from add_friend import add_friend
-    from read_message import read_message
-    from termcolor import colored
+init()
 
-    # validating users details.
-    error_message = None # variable for storing error messages.
+#expression for validation
+nameexpr = "^[a-zA-Z0-9]+[\s0-9a-zA-Z]*$";
+choexpr = "^[0-9]+$"
 
-    if  (age<12 and age>50) :
-        # invalid age.
-        error_message = "Invalid age. Provide correct details."
-        print error_message
-    else:
-        welcome_message = "Authentication complete. Welcome\n" \
-                          "Name : " + name + "\n" \
-                          "Age: " + str(age) + "\n" \
-                          "Rating: " + str(rating) + "\n" \
-                          "Proud to have you onboard"
-        if rating > 4.0:
-            welcome_message = welcome_message + "You are awesome"
-        elif rating > 3.0:
-            welcome_message = welcome_message + "Going Good"
-        else:
-            welcome_message = welcome_message + "Need Lots of Efforts"
-        print colored(welcome_message, 'green')
 
-        # displaying menu for user.
-        show_menu = True
-        while show_menu:
-            menu_choices = "What do you want to do? \n " \
-                           "1. Add a status update \n " \
-                           "2. Add a friend \n " \
-                           "3. Send a secret message \n " \
-                           "4. Read a secret message \n " \
-                           "5. Read Chats from a user \n " \
-                           "6. Close Application \n"
-            result = int(raw_input(menu_choices))
-
-            # validating users input
-            if (result == 1):
-                current_status_message = add_status(current_status_message)
-            elif (result == 2):
-                add_friend()
-                number_of_friends = len(friends)
-                print 'You have %d friends' %(number_of_friends)
-            elif (result == 3):
-                send_message()
-            elif (result == 4):
-                 read_message()
-            elif (result == 6):
-                # close application
-                show_menu = False
+def start_chat(spy):
+    cur_status = -1
+    menu()
+    choice = choose()
+    while(choice != 6):
+        if (choice == 1):
+            if cur_status==-1:
+                print "current status is: "+Fore.RED+"NULL"+Fore.RESET
             else:
-                print colored( "wrong choice try again.",'red')
+                print ("Current status is: "+Fore.GREEN+status_message[cur_status-1])+Fore.RESET
+            result=str(add_status(cur_status))
+            if (re.match(choexpr, result, flags=0) != None):
+                cur_status=int(result)
+                print ("Status changed. New status is: "+Fore.GREEN+ status_message[cur_status-1])+Fore.RESET
+            else:
+                print Fore.RED+result+Fore.RESET
+        elif (choice == 2):
+            add_friend();
+            print "Total available friends are: "+str(len(friend_list))
+            show_friends();
+        elif (choice == 3):
+            send_message()
+        elif (choice == 4):
+            read_message()
+        elif(choice == 5):
+            read_chat()
+        else:
+            print Fore.RED+"Wrong Choice Please Try again"+Fore.RESET
+        menu();
+        choice = choose()
+
+
+# shows the list of friends available in friend_list
+def show_friends():
+    pos=1;
+    for i in friend_list:
+        print pos, ". " + i.get_name();
+        pos = pos + 1;
+
+
+# function which is used to return correct integer choice
+def choose():
+    while True:
+        choice=raw_input("Enter your choice: ")
+        if(re.match(choexpr,choice,flags=0)!=None):
+            return int(choice)
+        else:
+            print (Fore.RED+"Please enter only integer choice."+Fore.RESET)
+
+#function which is used to print all the menu options for a spy
+def menu():
+    print "Choose from the following options:"
+    print "1. Add a status Update"
+    print "2. Add new Friends"
+    print "3. Send message to a friend"
+    print "4. Read message of a friend"
+    print "5. Read chat history of a friend"
+    print "6. Close the application"
+
