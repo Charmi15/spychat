@@ -1,72 +1,63 @@
-# import statements.
+# import statements
 from main import spy
-from start_chat import start_chat
-from globals import Spy
+from start_chat import  start_chat
 from termcolor import colored
-
 import re
 
-print "Let's get started!!!"
-whole=True
-#whole variable to iterate if value is not Y/N
-while whole:
-    question = "Do you want to continue as " + spy.Name + "(Y/N) ? "
+print "Let's get started!"
+repeat = True
+while repeat:
+    question = "Do you want to continue as " + spy['salutation'] + " " + spy['name'] + " (Y/N): "
     existing = raw_input(question)
 
     # validating users input
-    if existing.upper() == "Y":
-        # default user
-        whole=False
-        start_chat(spy.Name, spy.Age, spy.Rating, spy.SpyOnline)
+    if (existing.upper() == "Y") :
+        # user wants to continue as default user.
+        #  concatination of salutation and name of spy.
+        spy_name = spy['salutation'] + " " + spy['name']
+        # starting chat application.
+        start_chat(spy['name'], spy['age'], spy['rating'], spy['is_online'])
 
-    elif existing.upper() == "N":
-        # new user code here
-        whole=False
-        wholecheck=True#temporary variable
+    elif (existing.upper() == "N"):
+    # user wants to continue as new user
+    # chek wether spy has input something or not
+        repeat=False
+        wholecheck=True
         while(wholecheck):
-            tempcheck=True#temporary variable
-            # Validation Using Regex
-            patternsalutation='^Mr|Ms$'
-            patternname='^[A-Za-z][A-Za-z\s]+$'
-            patternage='^[0-9]+$'
-            patternrating='^[0-9]+\.[0-9]$'
-            # Validating Each Values Using Regular Expression
+            tempcheck=True
+            patternsalutation = '^Mr|Ms$'
+            patternname = '^[A-Za-z][A-Za-z\s]+$'
+            patternage = '^[0-9]+$'
+            patternrating = '^[0-9]+\.[0-9]$'
             while tempcheck:
-                salutation = raw_input("Mr. or Ms.? : ")
-                if (re.match(patternsalutation, salutation) != None):
+                spy['name'] = raw_input("Enter your name. ?")
+                if (re.match(patternname, spy['name']) != None):
                     tempcheck = False
                 else:
-                    print colored("Enter Again!!!!",'red')
-            tempcheck=True
+                    print colored("invalid name , try again", 'red')
+            tempcheck = True
             while tempcheck:
-                spy.Name=raw_input("Enter Name: ")
-                if(re.match(patternname,spy.Name)!=None):
+                spy['salutation'] = raw_input("Mr or Ms ? : ")
+                if(re.match(patternsalutation , spy['salutation']) != None):
                     tempcheck=False
                 else:
-                    print colored("Enter Again!!!!",'red')
-            # concatenation.
-            spy.Name = salutation + "."+spy.Name
+                    print colored("invalid salutation , try again",'red')
+            # concatination of salutation and name of spy.
+            spy['name'] = spy['salutation'] + " " + spy['name']
             tempcheck=True
             while tempcheck:
-                 spy.Age = raw_input("Age?")
-                 if (re.match(patternage, spy.Age) != None):
-                     tempcheck = False
-                     spy.Age=int(spy.Age)
-                 else:
-                     print colored("Enter Again!!!!", 'red')
-            tempcheck=True
-            while tempcheck:
-                spy.Rating = raw_input("Spy rating?")
-                if (re.match(patternrating, spy.Rating) != None):
+                spy['age'] = raw_input("Enter your age. ?")
+                if (re.match(patternage, spy['age']) != None):
                     tempcheck = False
-                    spy.Rating=float(spy.Rating)
                 else:
-                    print colored("Enter Again!!!!",'red')
-            # Checking If Spy is eligible
-            if spy.Rating <= 5.0 and spy.Age > 12 and spy.Age < 50:
-                start_chat(spy.Name,spy.Age,spy.Rating,spy.SpyOnline)
-                wholecheck=False
-            else:
-                print colored("Invalid Entry!!!!Start From Scratch.",'red')
-    else:
-        print colored("Wrong choice. Try again",'red')
+                    print colored("invalid age , try again", 'red')
+            tempcheck = True
+            while tempcheck:
+                spy['rating'] = raw_input("What is your spy rating?")
+                if (re.match(patternrating, spy['rating']) != None):
+                    tempcheck = False
+                else:
+                    print colored("invalid rating , try again", 'red')
+            spy['is_online'] = True
+            wholecheck=False
+        start_chat(spy['name'], spy['age'], spy['rating'], spy['is_online'])
