@@ -4,5 +4,7 @@
 current_status_message = None
 
 # list to store status messages.
-#already built in messages
-STATUS_MESSAGES = ['Ready for chat', 'Dont disturb.', 'alwayzzz free']
+STATUS_MESSAGES = ['My name is Bond, James Bond', 'Shaken, not stirred.', 'Keeping the British end up, Sir']
+
+# lists to store users friends information.
+friends = []
